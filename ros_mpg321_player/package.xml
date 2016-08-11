@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <name>ros_mpg321_player</name>
+  <version>0.0.0</version>
+  <description>The ros_mpg321_player package</description>
+
+  <maintainer email="zerom@robotis.com">ROBOTIS</maintainer>
+
+  <license>BSD</license>
+
+  <author email="zerom@robotis.com">ROBOTIS</author>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>std_msgs</run_depend>
+
+</package>
