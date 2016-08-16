@@ -42,37 +42,47 @@ std::string g_sound_file_path = "";
 
 void play_sound_callback(const std_msgs::String::ConstPtr& msg)
 {
+  if(msg->data == "")
+  {
     if(g_play_pid != -1)
-        kill(g_play_pid, SIGKILL);
+      kill(g_play_pid, SIGKILL);
 
-    g_play_pid = fork();
+    g_play_pid = -1;
+    return;
+  }
 
-    switch(g_play_pid)
-    {
-    case -1:
-        fprintf(stderr, "Fork Failed!! \n");
-        break;
-    case 0:
-        execl("/usr/bin/mpg321", "mpg321", (g_sound_file_path + msg->data).c_str(), "-q", (char*)0);
-        break;
-    default:
-        break;
-    }
+  if(g_play_pid != -1)
+    kill(g_play_pid, SIGKILL);
+
+  g_play_pid = fork();
+
+  switch(g_play_pid)
+  {
+  case -1:
+    fprintf(stderr, "Fork Failed!! \n");
+    break;
+  case 0:
+    execl("/usr/bin/mpg321", "mpg321", (g_sound_file_path + msg->data).c_str(), "-q", (char*)0);
+    break;
+  default:
+    break;
+  }
+
 }
 
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "sound_play");
-    ros::NodeHandle nh;
+  ros::init(argc, argv, "sound_play");
+  ros::NodeHandle nh;
 
-    g_sound_file_path = nh.param<std::string>("sound_file_path", "");
-    if(g_sound_file_path != "" && g_sound_file_path.compare(g_sound_file_path.size()-1, 1, "/") != 0)
-        g_sound_file_path += "/";
+  g_sound_file_path = nh.param<std::string>("sound_file_path", "");
+  if(g_sound_file_path != "" && g_sound_file_path.compare(g_sound_file_path.size()-1, 1, "/") != 0)
+    g_sound_file_path += "/";
 
-    ros::Subscriber play_mp3_sub = nh.subscribe("/play_sound_file", 10, &play_sound_callback);
+  ros::Subscriber play_mp3_sub = nh.subscribe("/play_sound_file", 10, &play_sound_callback);
 
-    ros::spin();
-    return 0;
+  ros::spin();
+  return 0;
 }
 
 
