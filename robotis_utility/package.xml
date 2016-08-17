@@ -1,11 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>ros_mpg321_player</name>
+  <name>robotis_utility</name>
   <version>0.1.0</version>
-  <description>
-    This package is a node that can playing mp3 file.
-    This package is using mpg321 which is command-line mp3 player.
-  </description>
+  <description>ROS packages for the ROBOTIS Utility (meta package)</description>
   <license>BSD</license>
   <author email="zerom@robotis.com">zerom</author>
   <maintainer email="pyo@robotis.com">pyo</maintainer>
@@ -13,8 +10,6 @@
   <url type="repository">https://github.com/ROBOTIS-GIT/ROBOTIS-Utility</url>
   <url type="website">http://wiki.ros.org/ros_mpg321_player</url>
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <run_depend>roscpp</run_depend>
-  <run_depend>std_msgs</run_depend>
+  <run_depend>ros_mpg321_player</run_depend>
+  <export><metapackage/></export>
 </package>
