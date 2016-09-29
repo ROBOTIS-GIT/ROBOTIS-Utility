@@ -39,15 +39,20 @@
 
 pid_t       g_play_pid = -1;
 std::string g_sound_file_path = "";
+ros::Publisher g_done_msg_pub;
 
 void play_sound_callback(const std_msgs::String::ConstPtr& msg)
 {
+  std_msgs::String done_msg;
+
   if(msg->data == "")
   {
     if(g_play_pid != -1)
       kill(g_play_pid, SIGKILL);
 
     g_play_pid = -1;
+    done_msg.data = "play_sound_fail";
+    g_done_msg_pub.publish(done_msg);
     return;
   }
 
@@ -60,9 +65,13 @@ void play_sound_callback(const std_msgs::String::ConstPtr& msg)
   {
   case -1:
     fprintf(stderr, "Fork Failed!! \n");
+    done_msg.data = "play_sound_fail";
+    g_done_msg_pub.publish(done_msg);
     break;
   case 0:
     execl("/usr/bin/mpg321", "mpg321", (g_sound_file_path + msg->data).c_str(), "-q", (char*)0);
+    done_msg.data = "play_sound";
+    g_done_msg_pub.publish(done_msg);
     break;
   default:
     break;
@@ -80,6 +89,7 @@ int main(int argc, char** argv)
     g_sound_file_path += "/";
 
   ros::Subscriber play_mp3_sub = nh.subscribe("/play_sound_file", 10, &play_sound_callback);
+  g_done_msg_pub = nh.advertise<std_msgs::String>("/robotis/movement_done", 5);
 
   ros::spin();
   return 0;
