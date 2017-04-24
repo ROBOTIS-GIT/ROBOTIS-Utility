@@ -29,13 +29,13 @@
  *******************************************************************************/
 
 /*
- * sound_play.cpp
+ * ros_madplay_player.cpp
  *
- *  Created on: 2016. 8. 11.
- *      Author: zerom
+ *  Created on: 2017. 02. 03.
+ *      Author: Jay Song
  */
 
-#include "ros_mpg321_player/ros_mpg321_player.h"
+#include "ros_madplay_player/ros_madplay_player.h"
 
 pid_t       g_play_pid = -1;
 std::string g_sound_file_path = "";
@@ -69,7 +69,7 @@ void play_sound_callback(const std_msgs::String::ConstPtr& msg)
     g_done_msg_pub.publish(done_msg);
     break;
   case 0:
-    execl("/usr/bin/mpg321", "mpg321", (g_sound_file_path + msg->data).c_str(), "-q", (char*)0);
+    execl("/usr/bin/madplay", "madplay", (g_sound_file_path + msg->data).c_str(), "-Q", (char*)0);
     done_msg.data = "play_sound";
     g_done_msg_pub.publish(done_msg);
     break;
@@ -81,7 +81,7 @@ void play_sound_callback(const std_msgs::String::ConstPtr& msg)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "sound_play");
+  ros::init(argc, argv, "ros_madplay_player");
   ros::NodeHandle nh;
 
   g_sound_file_path = nh.param<std::string>("sound_file_path", "");
