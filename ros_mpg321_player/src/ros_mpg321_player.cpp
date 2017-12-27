@@ -70,10 +70,10 @@ void play_sound_callback(const std_msgs::String::ConstPtr& msg)
     break;
   case 0:
     execl("/usr/bin/mpg321", "mpg321", (g_sound_file_path + msg->data).c_str(), "-q", (char*)0);
-    done_msg.data = "play_sound";
-    g_done_msg_pub.publish(done_msg);
     break;
   default:
+    done_msg.data = "play_sound";
+    g_done_msg_pub.publish(done_msg);
     break;
   }
 
