@@ -70,10 +70,10 @@ void play_sound_callback(const std_msgs::String::ConstPtr& msg)
     break;
   case 0:
     execl("/usr/bin/madplay", "madplay", (g_sound_file_path + msg->data).c_str(), "-Q", (char*)0);
-    done_msg.data = "play_sound";
-    g_done_msg_pub.publish(done_msg);
     break;
   default:
+    done_msg.data = "play_sound";
+    g_done_msg_pub.publish(done_msg);
     break;
   }
 
