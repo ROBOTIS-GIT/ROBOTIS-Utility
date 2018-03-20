@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>ros_mpg321_player</name>
   <version>0.1.2</version>
   <description>
@@ -9,12 +9,10 @@
   <license>BSD</license>
   <author email="zerom@robotis.com">Zerom</author>
   <maintainer email="pyo@robotis.com">Pyo</maintainer>
-  <url type="bugtracker">https://github.com/ROBOTIS-GIT/ROBOTIS-Utility/issues</url>
-  <url type="repository">https://github.com/ROBOTIS-GIT/ROBOTIS-Utility</url>
   <url type="website">http://wiki.ros.org/ros_mpg321_player</url>
+  <url type="repository">https://github.com/ROBOTIS-GIT/ROBOTIS-Utility</url>
+  <url type="bugtracker">https://github.com/ROBOTIS-GIT/ROBOTIS-Utility/issues</url>
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <run_depend>roscpp</run_depend>
-  <run_depend>std_msgs</run_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
 </package>
