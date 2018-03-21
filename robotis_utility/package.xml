@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>robotis_utility</name>
-  <version>0.1.2</version>
+  <version>0.1.3</version>
   <description>
     ROS packages for the ROBOTIS Utility (meta package)
   </description>
   <license>Apache 2.0</license>
   <author email="zerom@robotis.com">Zerom</author>
-  <author email="kmjung@robotis.com">Kayman</author>
   <author>Jay Song</author>
   <maintainer email="pyo@robotis.com">Pyo</maintainer>
   <url type="website">http://wiki.ros.org/robotis_utility</url>
