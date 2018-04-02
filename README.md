@@ -1,4 +1,4 @@
-# ROBOTIS Utility Package
+# ROBOTIS Utility
 
 ## ROS Packages for ROBOTIS Utility
 |Version|Kinetic + Ubuntu Xenial|Melodic + Ubuntu Bionic|
