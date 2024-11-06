@@ -24,11 +24,10 @@
 #ifndef ROS_MPG321_PLAYER_ROS_MPG321_PLAYER_H_
 #define ROS_MPG321_PLAYER_ROS_MPG321_PLAYER_H_
 
-
+#include <unistd.h>
 #include <signal.h>
 
-#include <ros/ros.h>
-#include <std_msgs/String.h>
-
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
 
 #endif /* ROS_MPG321_PLAYER_ROS_MPG321_PLAYER_H_ */

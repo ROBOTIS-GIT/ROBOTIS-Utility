@@ -25,11 +25,11 @@
 
 pid_t       g_play_pid = -1;
 std::string g_sound_file_path = "";
-ros::Publisher g_done_msg_pub;
+rclcpp::Publisher<std_msgs::msg::String>::SharedPtr g_done_msg_pub;
 
-void play_sound_callback(const std_msgs::String::ConstPtr& msg)
+void play_sound_callback(const std_msgs::msg::String::SharedPtr msg)
 {
-  std_msgs::String done_msg;
+  auto done_msg = std::make_shared<std_msgs::msg::String>();
 
   if(msg->data == "")
   {
@@ -37,8 +37,8 @@ void play_sound_callback(const std_msgs::String::ConstPtr& msg)
       kill(g_play_pid, SIGKILL);
 
     g_play_pid = -1;
-    done_msg.data = "play_sound_fail";
-    g_done_msg_pub.publish(done_msg);
+    done_msg->data = "play_sound_fail";
+    g_done_msg_pub->publish(*done_msg);
     return;
   }
 
@@ -51,15 +51,15 @@ void play_sound_callback(const std_msgs::String::ConstPtr& msg)
   {
   case -1:
     fprintf(stderr, "Fork Failed!! \n");
-    done_msg.data = "play_sound_fail";
-    g_done_msg_pub.publish(done_msg);
+    done_msg->data = "play_sound_fail";
+    g_done_msg_pub->publish(*done_msg);
     break;
   case 0:
     execl("/usr/bin/mpg321", "mpg321", (g_sound_file_path + msg->data).c_str(), "-q", (char*)0);
     break;
   default:
-    done_msg.data = "play_sound";
-    g_done_msg_pub.publish(done_msg);
+    done_msg->data = "play_sound";
+    g_done_msg_pub->publish(*done_msg);
     break;
   }
 
@@ -67,19 +67,17 @@ void play_sound_callback(const std_msgs::String::ConstPtr& msg)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "sound_play");
-  ros::NodeHandle nh;
+  rclcpp::init(argc, argv);
+  auto node = rclcpp::Node::make_shared("sound_play");
 
-  g_sound_file_path = nh.param<std::string>("sound_file_path", "");
+  g_sound_file_path = node->declare_parameter<std::string>("sound_file_path", "");
   if(g_sound_file_path != "" && g_sound_file_path.compare(g_sound_file_path.size()-1, 1, "/") != 0)
     g_sound_file_path += "/";
 
-  ros::Subscriber play_mp3_sub = nh.subscribe("/play_sound_file", 10, &play_sound_callback);
-  g_done_msg_pub = nh.advertise<std_msgs::String>("/robotis/movement_done", 5);
+  auto play_mp3_sub = node->create_subscription<std_msgs::msg::String>("/play_sound_file", 10, play_sound_callback);
+  g_done_msg_pub = node->create_publisher<std_msgs::msg::String>("/robotis/movement_done", 5);
 
-  ros::spin();
+  rclcpp::spin(node);
+  rclcpp::shutdown();
   return 0;
 }
-
-
-
